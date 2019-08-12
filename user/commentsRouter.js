@@ -30,7 +30,6 @@ router.post("/:id/comments", (req, res) => {
     if (text) {
         dataBase.insertComment(blogPostBody)
         .then(blog => {
-            console.log(blog);
             res.status(201).json(blogs);
         })
         .catch(error => {

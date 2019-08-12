@@ -41,7 +41,6 @@ router.post("/", (req, res) => {
   if (title && contents) {
     dataBase.insert(blogBody)
       .then(blogs => {
-        console.log(blogs);
         res.status(201).json(blogs);
       })
       .catch(error => {
@@ -78,7 +77,6 @@ router.put("/:id", (req, res) => {
   //get Title and Posts
   const { title, contents } = req.body;
 
-  console.log(title, contents);
   // Missing ID 
   if (!id) {
     dataBase.update(id, blogInfo).then(user =>
