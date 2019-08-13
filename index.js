@@ -1,7 +1,7 @@
 const express = require('express')
 const Router = require('./user/router')
 
-const Comments = require('./user/commentsRouter');
+const Comments = require('./user/commentsRouter')
 const port = 4000
 const server = express();
 
