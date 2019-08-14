@@ -8,20 +8,17 @@ router.get("/:id/comments", (req, res) => {
     const { id } = req.params;
     console.log(id);
         if (!id) {
-            dataBase.findCommentById(id).then(userId => 
-                res
+            return res
                     .status(404)
                     .json({ message: "This post could not be found, it may not exist" })
-                );
-        } else {
+        }
             dataBase.findCommentById(id)
             .then(userId => res.status(200).json(userId))
-            .catch(err => 
+            .catch(error => 
                 res
                 .status(500)
                 .json({ error: "This comment could not be found." })
                 );
-        }
 });
 
 router.post("/:id/comments", (req, res) => {

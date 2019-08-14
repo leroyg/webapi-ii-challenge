@@ -21,7 +21,15 @@ router.get("/:id", (req, res) => {
 
   if (id) {
     dataBase.findById(id)
-      .then(userId => res.status(200).json(userId))
+    //checks if method is returning an item in the array) 
+      .then(userId => {
+        if(userId.length){
+          res.status(200).json(userId) 
+        } else {
+          //if array it says message
+          res.status(404)
+          .json({ message: "ID not found"})
+      }})
       .catch(error => {
         error
           .status(500)
@@ -69,6 +77,7 @@ router.delete("/", (req, res) => {
       .status(404)
       .json({ message: "The post with the specified ID does not exist." });
 });
+
 router.put("/:id", (req, res) => {
   //get ID
   const { id } = req.params;
@@ -79,40 +88,36 @@ router.put("/:id", (req, res) => {
 
   // Missing ID 
   if (!id) {
-    dataBase.update(id, blogInfo).then(user =>
-      res
+    // don't need to query db if the parameter is wrong or non-existent
+    return  res
         .status(404)
         .json({ message: "The post with the specified ID does not exist." })
-    );
   }
 
   //Missing title or body
-  else if (!title) {
-    dataBase.update(id, blogInfo).then(user =>
-      res.status(400).json({
+  if (!title) {
+    return res
+    .status(400).json({
         errorMessage: "Please provide title for the post."
-      })
+      }
     );
   }
 
   //Missing body
-  else if (!contents) {
-    dataBase.update(id, blogInfo).then(user =>
-      res.status(400).json({
+  if (!contents) {
+    return res.status(400).json({
         errorMessage: "Please provide contents for the post."
       })
-    );
   }
 
   //If all works - server error
-  else
-  {  dataBase.update(id, blogInfo)
+ dataBase.update(id, blogInfo)
       .then(user => res.status(200).json(user))
       .catch(error =>
         res
           .status(500)
           .json({ message: "Server is broken." })
-      );}
+      )
 });
 
 module.exports = router;
